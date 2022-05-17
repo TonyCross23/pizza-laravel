@@ -25,7 +25,6 @@ return new class extends Migration
             $table->text('waiting_time');
             $table->longText('description');
             $table->timestamps();
-            $table->timestamps();
         });
     }
 
