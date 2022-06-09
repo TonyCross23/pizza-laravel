@@ -40,9 +40,9 @@
                     <button class="btn btn-sm bg-dark text-white "><i class="fas fa-plus"></i></button>
                   </a>
                 </h3>
-               
+                <span class="ml-5 "> Total - {{ $pizza->total() }}  </span>
                     <div class="card-tools">
-                      <form action="{{ route('admin#searchPizza') }}" method="post">
+                      <form action="{{ route('admin#searchPizza') }}" method="get">
                          <div class="input-group input-group-sm mt-1" style="width: 150px;">
                           @csrf
                           <input type="text" name="table_search" class="form-control float-right" placeholder="Search">

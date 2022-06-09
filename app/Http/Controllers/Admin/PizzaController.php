@@ -134,14 +134,10 @@ class PizzaController extends Controller
 
             $updateData['image'] = $fileName;
 
-            //update image data
-            Pizza::where('pizza_id',$id)->update($updateData);
-
-            return redirect()->route('admin#pizza')->with(['updateSuccess' => 'Pizza Updated!']);
-         }else{
+         }
              Pizza::where('pizza_id',$id)->update($updateData);
              return redirect()->route('admin#pizza')->with(['updateSuccess' => 'Pizza Updated!']);
-         }
+         
     
   }
 
@@ -172,6 +168,8 @@ class PizzaController extends Controller
                           ->orWhere('price','like','%'.$searchKey.'%')
                           ->paginate(7);
 
+      $searchData ->appends($request->all());
+
       if (count( $searchData ) == 0) {
         $emptyStatus = 0;
      }else{
@@ -181,7 +179,16 @@ class PizzaController extends Controller
 
       return view('admin.pizza.list')->with(['pizza' => $searchData,'status' => $emptyStatus]);
   }
- 
+
+  // show category item
+  public function categoryItem ($id) {
+      $data = Pizza::select('pizzas.*','categories.category_name as CategoryName')
+                    ->join('categories','categories.category_id','pizzas.category_id')
+                    ->where('pizzas.category_id',$id)
+                    ->paginate(5);
+      return view ('admin.category.item')->with(['pizza' => $data]);
+
+  }
 
   //insert pizza request data
   private function requestPizzaData($request,$fileName) {

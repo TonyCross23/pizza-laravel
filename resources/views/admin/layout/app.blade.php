@@ -58,7 +58,7 @@
           </li>
 
          <li class="nav-item">
-            <a href="user.html" class="nav-link">
+            <a href="{{ route('admin#userList') }}" class="nav-link">
             <i class="fas fa-users"></i>
               <p>
                 User
@@ -76,10 +76,10 @@
           </li>
 
           <li class="nav-item">
-            <a href="carrier.html" class="nav-link">
-              <i class="fas fa-biking"></i>
+            <a href="order.html" class="nav-link">
+              <i class="fa fa-file-signature"></i>
               <p>
-                Carrier
+                Contact
               </p>
             </a>
           </li>
@@ -88,7 +88,7 @@
            <p>
                <form action="{{ route('logout') }}" method="post">
                 @csrf
-                  <input type="submit" name="options" id="option3" autocomplete="off" value="Logout">
+                  <input type="submit" class="btn bg-dark text-white" name="options" id="option3" autocomplete="off" value="Logout">
                </form>
            </p>
           </li>

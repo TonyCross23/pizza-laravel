@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,18 +13,14 @@ class CategoryController extends Controller
 {
    
 
-    //direct admin profile
-    public function profile() {
-        $id = auth()->user()->id;
-        $userData = User::where ('id',$id)->first();
-       
-        return view ('admin.profile.index')->with(['user' => $userData]);
-    }
   
     //direct category page
     public function category () {
-
-        $data = Category::paginate(7);
+        $data = Category::select('categories.*', DB::raw('COUNT(pizzas.category_id) as count'))
+                ->leftJoin('pizzas','pizzas.category_id','categories.category_id')
+                ->groupBy('categories.category_id')
+                ->paginate(7);
+       
         return view ('admin.category.list')->with(['category'=>$data]);
     }
 
@@ -50,7 +47,7 @@ class CategoryController extends Controller
         return redirect()->route('admin#category')->with(['categorySuccess'=>"Category Added."]);
     }
 
-    //deleate Category
+    //delete Category
     public function deleteCategory ($id) {
         Category::where('category_id',$id)->delete();
         return back()->with(['deleteSuccess' => "Category Deleted!"]);
@@ -87,6 +84,7 @@ class CategoryController extends Controller
     public function searchCategory (Request $request) {
         // dd($request->searchData);
          $data = Category::where('category_name','like','%'.$request->searchData.'%')->paginate(7);
+         $data->appends($request->all());
         return view('admin.category.list')->with(['category'=>$data]);
     }
 
